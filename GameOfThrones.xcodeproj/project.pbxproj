@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E016F27E1D9050110090CDE6 /* Person+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E016F27A1D9050110090CDE6 /* Person+CoreDataClass.swift */; };
+		E016F27F1D9050110090CDE6 /* Person+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E016F27B1D9050110090CDE6 /* Person+CoreDataProperties.swift */; };
+		E016F2801D9050110090CDE6 /* House+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E016F27C1D9050110090CDE6 /* House+CoreDataClass.swift */; };
+		E016F2811D9050110090CDE6 /* House+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E016F27D1D9050110090CDE6 /* House+CoreDataProperties.swift */; };
 		E0D5BE631D901A04002E78A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5BE621D901A04002E78A2 /* AppDelegate.swift */; };
 		E0D5BE651D901A04002E78A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5BE641D901A04002E78A2 /* ViewController.swift */; };
 		E0D5BE681D901A04002E78A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0D5BE661D901A04002E78A2 /* Main.storyboard */; };
@@ -35,6 +39,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E016F27A1D9050110090CDE6 /* Person+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Person+CoreDataClass.swift"; sourceTree = "<group>"; };
+		E016F27B1D9050110090CDE6 /* Person+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Person+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		E016F27C1D9050110090CDE6 /* House+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "House+CoreDataClass.swift"; sourceTree = "<group>"; };
+		E016F27D1D9050110090CDE6 /* House+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "House+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E0D5BE5F1D901A04002E78A2 /* GameOfThrones.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameOfThrones.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0D5BE621D901A04002E78A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E0D5BE641D901A04002E78A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -79,6 +87,10 @@
 		E0D5BE561D901A04002E78A2 = {
 			isa = PBXGroup;
 			children = (
+				E016F27A1D9050110090CDE6 /* Person+CoreDataClass.swift */,
+				E016F27B1D9050110090CDE6 /* Person+CoreDataProperties.swift */,
+				E016F27C1D9050110090CDE6 /* House+CoreDataClass.swift */,
+				E016F27D1D9050110090CDE6 /* House+CoreDataProperties.swift */,
 				E0D5BE611D901A04002E78A2 /* GameOfThrones */,
 				E0D5BE791D901A05002E78A2 /* GameOfThronesTests */,
 				E0D5BE841D901A05002E78A2 /* GameOfThronesUITests */,
@@ -196,6 +208,7 @@
 				TargetAttributes = {
 					E0D5BE5E1D901A04002E78A2 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = XDVQFF2BC4;
 						ProvisioningStyle = Automatic;
 					};
 					E0D5BE751D901A05002E78A2 = {
@@ -262,6 +275,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E016F2801D9050110090CDE6 /* House+CoreDataClass.swift in Sources */,
+				E016F27E1D9050110090CDE6 /* Person+CoreDataClass.swift in Sources */,
+				E016F2811D9050110090CDE6 /* House+CoreDataProperties.swift in Sources */,
+				E016F27F1D9050110090CDE6 /* Person+CoreDataProperties.swift in Sources */,
 				E0D5BE651D901A04002E78A2 /* ViewController.swift in Sources */,
 				E0D5BE6B1D901A04002E78A2 /* GameOfThrones.xcdatamodeld in Sources */,
 				E0D5BE631D901A04002E78A2 /* AppDelegate.swift in Sources */,
@@ -416,6 +433,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = XDVQFF2BC4;
 				INFOPLIST_FILE = GameOfThrones/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = amanda.harman.GameOfThrones;
@@ -428,6 +446,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = XDVQFF2BC4;
 				INFOPLIST_FILE = GameOfThrones/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = amanda.harman.GameOfThrones;
@@ -509,6 +528,7 @@
 				E0D5BE8C1D901A05002E78A2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E0D5BE8D1D901A05002E78A2 /* Build configuration list for PBXNativeTarget "GameOfThronesTests" */ = {
 			isa = XCConfigurationList;
@@ -517,6 +537,7 @@
 				E0D5BE8F1D901A05002E78A2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E0D5BE901D901A05002E78A2 /* Build configuration list for PBXNativeTarget "GameOfThronesUITests" */ = {
 			isa = XCConfigurationList;
@@ -525,6 +546,7 @@
 				E0D5BE921D901A05002E78A2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
