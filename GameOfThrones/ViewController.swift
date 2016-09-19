@@ -9,35 +9,92 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegate{
+class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate{
     
 
     @IBOutlet weak var searchButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
-    var people = [NSManagedObject]()
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    var managedContext: NSManagedObjectContext?
+    lazy var managedContext: NSManagedObjectContext = {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
+    }()
+    
+    var fetchedResultsController: NSFetchedResultsController<NSManagedObject>?
+
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "\"The List\""
+        title = "The List"
         tableView.register(UITableViewCell.self,
                            forCellReuseIdentifier: "Cell")
-        managedContext = appDelegate.persistentContainer.viewContext
-        
-        
+        self.view.addSubview(tableView)
+      initializeFetchedResultsController()
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        fetch()
-    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    func initializeFetchedResultsController(){
+        let peopleFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
+        let primarySortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        peopleFetchRequest.sortDescriptors = [primarySortDescriptor]
+        
+        fetchedResultsController = NSFetchedResultsController(
+            fetchRequest: peopleFetchRequest as! NSFetchRequest<NSManagedObject>,
+            managedObjectContext: self.managedContext,
+            sectionNameKeyPath: "firstLetter",
+            cacheName: nil)
+        fetchedResultsController?.delegate = self
+        
+        do{
+            try
+                fetchedResultsController?.performFetch()}
+    
+        catch{
+            print("Fetch failed")
+        }
+    }
+    
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            tableView.insertRows(at: [newIndexPath!], with: .fade)
+        case .delete:
+            self.tableView.deleteRows(at: [indexPath! as IndexPath], with: .fade)
+        case .update:
+            guard let indexPath = indexPath,let person = controller.object(at: indexPath) as? Person,let cell = tableView.cellForRow(at: indexPath) else {return}
+            configureCell(cell: cell, person: person)
+            tableView.reloadRows(at: [indexPath], with: .fade)
+        case .move:
+            tableView.deleteRows(at: [indexPath!], with: UITableViewRowAnimation.fade)
+            tableView.insertRows(at: [newIndexPath!], with: UITableViewRowAnimation.fade)
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        switch type {
+        case .insert:
+            tableView.insertSections(NSIndexSet(index:sectionIndex) as IndexSet, with: .fade)
+        case .delete:
+            tableView.deleteSections(NSIndexSet(index:sectionIndex) as IndexSet, with: .fade)
+        default:
+            break
+        }
+    }
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
@@ -46,8 +103,17 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         let saveAction = UIAlertAction(title: "Save", style: .default, handler: {
             (action:UIAlertAction) -> Void in
             let textField = alert.textFields!.first
-            self.saveName(name: textField!.text!)
-            self.tableView.reloadData()})
+            guard let person = NSEntityDescription.insertNewObject(forEntityName: "Person", into: self.managedContext) as? Person else {return}
+            person.name = textField?.text
+            do {
+                try self.managedContext.save()
+
+            }catch {
+                print("There was an error saving")
+                return
+            }
+            
+        })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (action: UIAlertAction) -> Void in}
         
@@ -56,111 +122,55 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         alert.addAction(cancelAction)
         present(alert,animated: true, completion: nil)
     }
-    @IBAction func searchButtonPressed(_ sender: AnyObject) {
-        
-        if sender.title == "Search"{
-            let alert = UIAlertController(title: "Search",message: "Search for name",preferredStyle: .alert)
-            
-            let goAction = UIAlertAction(title: "Go", style: .default, handler: {
-                (action:UIAlertAction) -> Void in
-                let textField = alert.textFields!.first
-                self.searchPerson(name: textField!.text!)
-                self.tableView.reloadData()
-                self.searchButton.title = "Back"
-                }
-            )
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (action: UIAlertAction) -> Void in}
-            alert.addTextField { (textField: UITextField) -> Void in}
-            alert.addAction(goAction)
-            alert.addAction(cancelAction)
-            present(alert,animated: true, completion: nil)
-            
-        }
-        
-        if sender.title == "Back"{
-            self.fetch()
-            tableView.reloadData()
-            self.searchButton.title = "Search"}
-        
-    }
     
+
     
-    func fetch(){
-        if let managedContext = managedContext{
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
-            do {
-                let results =
-                    try managedContext.fetch(fetchRequest)
-                people = results as! [NSManagedObject]
-            } catch let error as NSError {
-                print("Could not fetch \(error), \(error.userInfo)")
-            }
-        }
-    }
-    
-    func searchPerson(name: String){
-        if let managedContext = managedContext{
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
-            fetchRequest.predicate = NSPredicate(format: "name==%@", name)
-            do {
-                let results =
-                    try managedContext.fetch(fetchRequest)
-                people = results as! [NSManagedObject]
-            } catch let error as NSError {
-                print("Could not fetch \(error), \(error.userInfo)")
-            }
-        }
-        
-    }
-    
-    func saveName(name: String) {
-        if let managedContext = self.managedContext{
-            let entity =  NSEntityDescription.entity(forEntityName: "Person", in:managedContext)
-            let person = NSManagedObject(entity: entity!, insertInto: managedContext)
-            person.setValue(name, forKey: "name")
-            
-            do {
-                try managedContext.save()
-                people.append(person)
-            } catch let error as NSError  {
-                print("Could not save \(error), \(error.userInfo)")
-            }
-        }
-    }
-    
-    
-    
+ 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return people.count
+        guard let sections = fetchedResultsController?.sections else {
+            return 0
+        }
+        let sectionInfo = sections[section]
+        return sectionInfo.numberOfObjects
+
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
-        let person = people[indexPath.row]
-        cell!.textLabel!.text = person.value(forKey: "name") as? String
-        return cell!
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        if let person = fetchedResultsController?.object(at: indexPath) as? Person{
+            configureCell(cell: cell, person: person)}
+        return cell
+ 
     }
     
     @nonobjc func tableView(_tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
     
+    func configureCell(cell: UITableViewCell, person: Person){
+        cell.textLabel?.text = person.name
+    }
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action , indexPath) -> Void in
-            if let managedContext = self.managedContext{
-                managedContext.delete(self.people[indexPath.row] as NSManagedObject)
-                self.people.remove(at: indexPath.row)
-                do {
-                    try managedContext.save()
-                } catch let error as NSError  {
-                    print("Could not save \(error), \(error.userInfo)")
-                }
-                
-                self.tableView.deleteRows(at: [indexPath as IndexPath], with: .fade)}})
+            if let record = self.fetchedResultsController?.object(at: indexPath){
+                self.managedContext.delete(record)}
+ 
+       })
         
         return [deleteAction]
-        
+
+        }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return fetchedResultsController?.sections?.count ?? 0
     }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let sections = fetchedResultsController?.sections else {return nil}
+        let currentSection = sections[section]
+        return currentSection.name
+    }
+    
 }
 
