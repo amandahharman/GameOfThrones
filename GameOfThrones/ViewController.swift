@@ -123,9 +123,11 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         present(alert,animated: true, completion: nil)
     }
     
+    @IBAction func searchButtonPressed(_ sender: UIBarButtonItem) {
+    }
 
-    
- 
+
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sections = fetchedResultsController?.sections else {
             return 0

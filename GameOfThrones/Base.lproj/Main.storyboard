@@ -45,7 +45,7 @@
                             </barButtonItem>
                             <barButtonItem title="Search" id="EZA-Qy-82u">
                                 <connections>
-                                    <action selector="searchButtonPressed:" destination="BYZ-38-t0r" id="K7Y-zF-J6E"/>
+                                    <action selector="searchButtonPressed:" destination="BYZ-38-t0r" id="FKi-jy-0Zn"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
