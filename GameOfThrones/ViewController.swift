@@ -20,6 +20,8 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     }()
     
     var fetchedResultsController: NSFetchedResultsController<NSManagedObject>?
+    let searchController = UISearchController(searchResultsController: nil)
+    var searchString: String?
 
     
     
@@ -29,7 +31,11 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         tableView.register(UITableViewCell.self,
                            forCellReuseIdentifier: "Cell")
         self.view.addSubview(tableView)
-      initializeFetchedResultsController()
+        initializeFetchedResultsController()
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
     }
 
     
@@ -58,7 +64,36 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             print("Fetch failed")
         }
     }
-    
+
+    func filterContentForSearchText(searchText: String) {
+        if searchController.isActive {
+        NSLayoutConstraint(item: tableView, attribute: .top, relatedBy: .equal, toItem: view, attribute:.top, multiplier: 1, constant: 0).isActive = true
+        let predicate = NSPredicate(format: "name== %@", searchText)
+        self.fetchedResultsController?.fetchRequest.predicate = predicate
+        
+        do {
+            try self.fetchedResultsController?.performFetch()
+        } catch {
+            let fetchError = error as NSError
+            print("\(fetchError), \(fetchError.userInfo)")
+            }
+            
+        tableView.reloadData()
+        
+        }
+        else{
+            self.fetchedResultsController?.fetchRequest.predicate = nil
+            
+            do {
+                try self.fetchedResultsController?.performFetch()
+            } catch {
+                let fetchError = error as NSError
+                print("\(fetchError), \(fetchError.userInfo)")
+            }
+            tableView.reloadData()
+        }
+    }
+
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
@@ -124,6 +159,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     }
     
     @IBAction func searchButtonPressed(_ sender: UIBarButtonItem) {
+   
     }
 
 
@@ -176,3 +212,10 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     
 }
 
+extension ViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchText: searchController.searchBar.text!)
+    
+    }
+ 
+}
