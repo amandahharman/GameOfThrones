@@ -11,8 +11,6 @@ import CoreData
 
 class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate{
     
-
-    @IBOutlet weak var searchButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     lazy var managedContext: NSManagedObjectContext = {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -68,6 +66,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     func filterContentForSearchText(searchText: String) {
         if searchController.isActive {
         NSLayoutConstraint(item: tableView, attribute: .top, relatedBy: .equal, toItem: view, attribute:.top, multiplier: 1, constant: 0).isActive = true
+           
         let predicate = NSPredicate(format: "name== %@", searchText)
         self.fetchedResultsController?.fetchRequest.predicate = predicate
         
@@ -78,7 +77,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             print("\(fetchError), \(fetchError.userInfo)")
             }
             
-        tableView.reloadData()
+                tableView.reloadData()
         
         }
         else{
@@ -158,11 +157,6 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         present(alert,animated: true, completion: nil)
     }
     
-    @IBAction func searchButtonPressed(_ sender: UIBarButtonItem) {
-   
-    }
-
-
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sections = fetchedResultsController?.sections else {
