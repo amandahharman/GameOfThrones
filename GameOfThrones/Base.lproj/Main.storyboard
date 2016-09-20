@@ -44,11 +44,53 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="Ztp-Z5-nhe" id="qaB-vJ-mv1"/>
+                        <segue destination="EiC-0M-12i" kind="show" identifier="toDetails" id="KaX-Gd-6Qi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1270" y="139"/>
+        </scene>
+        <!--Details View Controller-->
+        <scene sceneID="CTC-W9-Ywc">
+            <objects>
+                <viewController id="EiC-0M-12i" customClass="DetailsViewController" customModule="GameOfThrones" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Iql-Gm-tQi"/>
+                        <viewControllerLayoutGuide type="bottom" id="XGj-iz-k0a"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jI4-DG-nTG">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1U-07-Q46">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="house" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TLo-JU-utU">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="TLo-JU-utU" firstAttribute="top" secondItem="V1U-07-Q46" secondAttribute="bottom" constant="20" id="4Xk-WN-rct"/>
+                            <constraint firstItem="TLo-JU-utU" firstAttribute="leading" secondItem="jI4-DG-nTG" secondAttribute="leadingMargin" id="Ch3-YF-fVN"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="TLo-JU-utU" secondAttribute="trailing" id="GbW-kt-dNN"/>
+                            <constraint firstItem="V1U-07-Q46" firstAttribute="centerX" secondItem="jI4-DG-nTG" secondAttribute="centerX" id="JY3-km-Jyj"/>
+                            <constraint firstItem="V1U-07-Q46" firstAttribute="top" secondItem="Iql-Gm-tQi" secondAttribute="bottom" constant="130" id="SM1-SQ-QMy"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="houseLabel" destination="TLo-JU-utU" id="grH-zS-9en"/>
+                        <outlet property="nameLabel" destination="V1U-07-Q46" id="NZY-ab-vnc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NK2-yD-5Qs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2026" y="145"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="1SA-zI-GhT">

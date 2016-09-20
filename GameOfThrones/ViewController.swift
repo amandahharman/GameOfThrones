@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate{
+class ViewController: UIViewController{
     
     @IBOutlet weak var tableView: UITableView!
     lazy var managedContext: NSManagedObjectContext = {
@@ -19,8 +19,8 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
     
     var fetchedResultsController: NSFetchedResultsController<NSManagedObject>?
     let searchController = UISearchController(searchResultsController: nil)
-    var searchString: String?
-
+    var selectedPerson: Person?
+    
     
     
     override func viewDidLoad() {
@@ -35,7 +35,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
     }
-
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -57,28 +57,28 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         do{
             try
                 fetchedResultsController?.performFetch()}
-    
+            
         catch{
             print("Fetch failed")
         }
     }
-
+    
     func filterContentForSearchText(searchText: String) {
         if searchController.isActive {
-        NSLayoutConstraint(item: tableView, attribute: .top, relatedBy: .equal, toItem: view, attribute:.top, multiplier: 1, constant: 0).isActive = true
-           
-        let predicate = NSPredicate(format: "name== %@", searchText)
-        self.fetchedResultsController?.fetchRequest.predicate = predicate
-        
-        do {
-            try self.fetchedResultsController?.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("\(fetchError), \(fetchError.userInfo)")
+            NSLayoutConstraint(item: tableView, attribute: .top, relatedBy: .equal, toItem: view, attribute:.top, multiplier: 1, constant: 0).isActive = true
+            
+            let predicate = NSPredicate(format: "name== %@", searchText)
+            self.fetchedResultsController?.fetchRequest.predicate = predicate
+            
+            do {
+                try self.fetchedResultsController?.performFetch()
+            } catch {
+                let fetchError = error as NSError
+                print("\(fetchError), \(fetchError.userInfo)")
             }
             
-                tableView.reloadData()
-        
+            tableView.reloadData()
+            
         }
         else{
             self.fetchedResultsController?.fetchRequest.predicate = nil
@@ -92,7 +92,49 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
             tableView.reloadData()
         }
     }
+    
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        let alert = UIAlertController(title: "New Name",message: "Add a new name",preferredStyle: .alert)
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default, handler: {
+            (action:UIAlertAction) -> Void in
+            let textField = alert.textFields!.first
+            guard let person = NSEntityDescription.insertNewObject(forEntityName: "Person", into: self.managedContext) as? Person else {return}
+            person.name = textField?.text
+            do {
+                try self.managedContext.save()
+                
+            }catch {
+                print("There was an error saving")
+                return
+            }
+            
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (action: UIAlertAction) -> Void in}
+        
+        alert.addTextField { (textField: UITextField) -> Void in}
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        present(alert,animated: true, completion: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+ 
+        if segue.identifier == "toDetails"{
+            let destinationVC : DetailsViewController = segue.destination as! DetailsViewController
+            destinationVC.person = selectedPerson
+            }
+            
+        }
+    
 
+
+}
+
+extension ViewController:NSFetchedResultsControllerDelegate{
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
@@ -128,43 +170,16 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         tableView.endUpdates()
     }
     
+}
 
-    
-    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
-        
-        let alert = UIAlertController(title: "New Name",message: "Add a new name",preferredStyle: .alert)
-        
-        let saveAction = UIAlertAction(title: "Save", style: .default, handler: {
-            (action:UIAlertAction) -> Void in
-            let textField = alert.textFields!.first
-            guard let person = NSEntityDescription.insertNewObject(forEntityName: "Person", into: self.managedContext) as? Person else {return}
-            person.name = textField?.text
-            do {
-                try self.managedContext.save()
-
-            }catch {
-                print("There was an error saving")
-                return
-            }
-            
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (action: UIAlertAction) -> Void in}
-        
-        alert.addTextField { (textField: UITextField) -> Void in}
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        present(alert,animated: true, completion: nil)
-    }
-    
-
+extension ViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sections = fetchedResultsController?.sections else {
             return 0
         }
         let sectionInfo = sections[section]
         return sectionInfo.numberOfObjects
-
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
@@ -172,7 +187,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         if let person = fetchedResultsController?.object(at: indexPath) as? Person{
             configureCell(cell: cell, person: person)}
         return cell
- 
+        
     }
     
     @nonobjc func tableView(_tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -183,17 +198,7 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         cell.textLabel?.text = person.name
     }
     
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action , indexPath) -> Void in
-            if let record = self.fetchedResultsController?.object(at: indexPath){
-                self.managedContext.delete(record)}
- 
-       })
-        
-        return [deleteAction]
-
-        }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedResultsController?.sections?.count ?? 0
     }
@@ -203,13 +208,35 @@ class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegat
         let currentSection = sections[section]
         return currentSection.name
     }
+}
+
+extension ViewController: UITableViewDelegate{
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .default, title: "Delete", handler: { (action , indexPath) -> Void in
+            if let record = self.fetchedResultsController?.object(at: indexPath){
+                self.managedContext.delete(record)}
+            
+        })
+        
+        return [deleteAction]
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let person = fetchedResultsController?.object(at: indexPath) as? Person{
+            selectedPerson = person
+        }
+        performSegue(withIdentifier: "toDetails", sender: self)
+        
+    }
+    
     
 }
 
 extension ViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchText: searchController.searchBar.text!)
-    
+        
     }
- 
+    
 }
