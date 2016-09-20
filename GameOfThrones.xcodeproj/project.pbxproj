@@ -19,6 +19,7 @@
 		E0D5BE701D901A04002E78A2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0D5BE6E1D901A04002E78A2 /* LaunchScreen.storyboard */; };
 		E0D5BE7B1D901A05002E78A2 /* GameOfThronesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5BE7A1D901A05002E78A2 /* GameOfThronesTests.swift */; };
 		E0D5BE861D901A05002E78A2 /* GameOfThronesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5BE851D901A05002E78A2 /* GameOfThronesUITests.swift */; };
+		E0D5BE941D90DD79002E78A2 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5BE931D90DD79002E78A2 /* DetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		E0D5BE811D901A05002E78A2 /* GameOfThronesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GameOfThronesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0D5BE851D901A05002E78A2 /* GameOfThronesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOfThronesUITests.swift; sourceTree = "<group>"; };
 		E0D5BE871D901A05002E78A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0D5BE931D90DD79002E78A2 /* DetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 			children = (
 				E0D5BE621D901A04002E78A2 /* AppDelegate.swift */,
 				E0D5BE641D901A04002E78A2 /* ViewController.swift */,
+				E0D5BE931D90DD79002E78A2 /* DetailsViewController.swift */,
 				E0D5BE661D901A04002E78A2 /* Main.storyboard */,
 				E0D5BE6C1D901A04002E78A2 /* Assets.xcassets */,
 				E0D5BE6E1D901A04002E78A2 /* LaunchScreen.storyboard */,
@@ -278,6 +281,7 @@
 				E016F2801D9050110090CDE6 /* House+CoreDataClass.swift in Sources */,
 				E016F27E1D9050110090CDE6 /* Person+CoreDataClass.swift in Sources */,
 				E016F2811D9050110090CDE6 /* House+CoreDataProperties.swift in Sources */,
+				E0D5BE941D90DD79002E78A2 /* DetailsViewController.swift in Sources */,
 				E016F27F1D9050110090CDE6 /* Person+CoreDataProperties.swift in Sources */,
 				E0D5BE651D901A04002E78A2 /* ViewController.swift in Sources */,
 				E0D5BE6B1D901A04002E78A2 /* GameOfThrones.xcdatamodeld in Sources */,
