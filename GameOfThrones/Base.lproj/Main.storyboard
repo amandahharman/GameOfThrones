@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -36,20 +37,47 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="U4e-BB-Kpv">
-                        <barButtonItem key="rightBarButtonItem" title="Add" id="zXg-3q-7fS">
-                            <connections>
-                                <action selector="addButtonPressed:" destination="BYZ-38-t0r" id="azY-h2-2C6"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem image="plus" id="zXg-3q-7fS">
+                                <connections>
+                                    <action selector="addButtonPressed:" destination="BYZ-38-t0r" id="azY-h2-2C6"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Name" id="e2V-rU-HDc">
+                                <connections>
+                                    <action selector="filterButtonPressed:" destination="BYZ-38-t0r" id="AWV-4p-H9Y"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="filterButton" destination="e2V-rU-HDc" id="VCk-W6-ZRa"/>
                         <outlet property="tableView" destination="Ztp-Z5-nhe" id="qaB-vJ-mv1"/>
                         <segue destination="EiC-0M-12i" kind="show" identifier="toDetails" id="KaX-Gd-6Qi"/>
+                        <segue destination="4sq-Ab-Si0" kind="show" identifier="toHouseDetails" id="hmV-vS-08J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1270" y="139"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="GX9-qY-vyR">
+            <objects>
+                <viewController id="4sq-Ab-Si0" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tfT-sF-mSW"/>
+                        <viewControllerLayoutGuide type="bottom" id="e6I-q7-mAn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="q57-hu-9LX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.6829392997" green="0.0" blue="0.0070121920409999998" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f5f-Sq-nCK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1581" y="807"/>
         </scene>
         <!--Details View Controller-->
         <scene sceneID="CTC-W9-Ywc">
@@ -128,4 +156,7 @@
             <point key="canvasLocation" x="-73" y="146"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="plus" width="20" height="20"/>
+    </resources>
 </document>
