@@ -16,6 +16,8 @@ class DetailsViewController: UIViewController {
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var houseLabel: UILabel!
+    @IBOutlet weak var sigilLabel: UILabel!
+    @IBOutlet weak var sigilImage: UIImageView!
 
     var person: Person!
     
@@ -23,14 +25,15 @@ class DetailsViewController: UIViewController {
         super.viewDidLoad()
 
         nameLabel.text = person.name
-        houseLabel.text = person.house?.name
- 
-        // Do any additional setup after loading the view.
+        if let house = person.house{
+        houseLabel.text = "House: \(house.name!)"
+        sigilLabel.text = "Sigil: \(house.sigil!)"
+        sigilImage.image = UIImage(named: "\(house.sigil!)")
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
 

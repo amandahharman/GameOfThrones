@@ -34,6 +34,31 @@ class ViewController: UIViewController{
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
+        
+        
+        let starkDict: [String:String] = [
+            "name": "Stark",
+            "sigil": "direwolf"
+        ]
+        let unknownDict: [String:String] = [
+            "name": "Unknown",
+            "sigil": "unknown"
+        ]
+        let houses = [starkDict, unknownDict]
+        
+        for house in houses{
+        guard let houseEntity = NSEntityDescription.insertNewObject(forEntityName: "House", into: self.managedContext) as? House else {return}
+        houseEntity.name = house["name"]
+        houseEntity.sigil = house["sigil"]
+        do {
+            try self.managedContext.save()
+            
+        }catch {
+            print("There was an error saving")
+            return
+        }
+        
+        }
     }
     
     
@@ -61,8 +86,12 @@ class ViewController: UIViewController{
         catch{
             print("Fetch failed")
         }
+        
+
     }
+
     
+
     func filterContentForSearchText(searchText: String) {
         if searchController.isActive {
             NSLayoutConstraint(item: tableView, attribute: .top, relatedBy: .equal, toItem: view, attribute:.top, multiplier: 1, constant: 0).isActive = true
@@ -103,6 +132,29 @@ class ViewController: UIViewController{
             let textField = alert.textFields!.first
             guard let person = NSEntityDescription.insertNewObject(forEntityName: "Person", into: self.managedContext) as? Person else {return}
             person.name = textField?.text
+            if (person.name?.contains("Stark"))!{
+                do {
+                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "House")
+                    fetchRequest.predicate = NSPredicate(format: "name==%@", "Stark")
+                    try person.house = self.managedContext.fetch(fetchRequest).first as? House
+                    
+                }catch {
+                    print("There was an error saving")
+                    return
+                }
+            }
+            else {
+                do {
+                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "House")
+                    fetchRequest.predicate = NSPredicate(format: "name==%@", "Unknown")
+                    try person.house = self.managedContext.fetch(fetchRequest).first as? House
+                    
+                }catch {
+                    print("There was an error saving")
+                    return
+                }
+            }
+            
             do {
                 try self.managedContext.save()
                 
