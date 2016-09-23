@@ -12,4 +12,8 @@ import CoreData
 
 public class House: NSManagedObject {
 
+    
+    var firstLetter: String{
+        return String(name!.characters.first!)
+    }
 }

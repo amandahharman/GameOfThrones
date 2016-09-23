@@ -20,21 +20,35 @@ class ViewController: UIViewController{
     var fetchedResultsController: NSFetchedResultsController<NSManagedObject>?
     let searchController = UISearchController(searchResultsController: nil)
     var selectedPerson: Person?
-    
+    var selectedHouse: House?
+            let houseFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "House")
+       let peopleFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
+    @IBOutlet weak var filterButton: UIBarButtonItem!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "The List"
+        title = "Directory"
         tableView.register(UITableViewCell.self,
                            forCellReuseIdentifier: "Cell")
         self.view.addSubview(tableView)
-        initializeFetchedResultsController()
+        initializeFetchedResultsController(request: peopleFetchRequest)
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
-    }
+        
+        do{
+            if try self.managedContext.count(for: houseFetchRequest) == 0{
+                buildHouses()
+            }}
+            
+        catch {
+            print("Error")
+            return
+        }
+     
+          }
     
     
     override func didReceiveMemoryWarning() {
@@ -42,13 +56,41 @@ class ViewController: UIViewController{
         // Dispose of any resources that can be recreated.
     }
     
-    func initializeFetchedResultsController(){
-        let peopleFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
+    func buildHouses(){
+        let starkDict: [String:String] = [
+            "name": "Stark",
+            "sigil": "direwolf"
+        ]
+        let unknownDict: [String:String] = [
+            "name": "Unknown",
+            "sigil": "unknown"
+        ]
+        let houses = [starkDict, unknownDict]
+        
+        for house in houses{
+            guard let houseEntity = NSEntityDescription.insertNewObject(forEntityName: "House", into: self.managedContext) as? House else {return}
+            houseEntity.name = house["name"]
+            houseEntity.sigil = house["sigil"]
+            do {
+                try self.managedContext.save()
+                
+            }catch {
+                print("There was an error saving")
+                return
+            }
+            
+        }
+
+    }
+    
+    func initializeFetchedResultsController(request: NSFetchRequest<NSFetchRequestResult>){
+        let  fetchRequest = request
         let primarySortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        peopleFetchRequest.sortDescriptors = [primarySortDescriptor]
+        fetchRequest.predicate = nil
+        fetchRequest.sortDescriptors = [primarySortDescriptor]
         
         fetchedResultsController = NSFetchedResultsController(
-            fetchRequest: peopleFetchRequest as! NSFetchRequest<NSManagedObject>,
+            fetchRequest: fetchRequest as! NSFetchRequest<NSManagedObject>,
             managedObjectContext: self.managedContext,
             sectionNameKeyPath: "firstLetter",
             cacheName: nil)
@@ -62,6 +104,7 @@ class ViewController: UIViewController{
             print("Fetch failed")
         }
     }
+  
     
     func filterContentForSearchText(searchText: String) {
         if searchController.isActive {
@@ -93,6 +136,21 @@ class ViewController: UIViewController{
         }
     }
     
+    @IBAction func filterButtonPressed(_ sender: UIBarButtonItem) {
+        if sender.title == "Name"{
+            sender.title = "House"
+            initializeFetchedResultsController(request: peopleFetchRequest)
+            tableView.reloadData()
+         
+            
+        }
+        else if sender.title == "House"{
+            sender.title = "Name"
+            initializeFetchedResultsController(request: houseFetchRequest)
+            tableView.reloadData()
+        }
+        
+    }
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
@@ -103,6 +161,31 @@ class ViewController: UIViewController{
             let textField = alert.textFields!.first
             guard let person = NSEntityDescription.insertNewObject(forEntityName: "Person", into: self.managedContext) as? Person else {return}
             person.name = textField?.text
+            if (person.name?.contains("Stark"))!{
+                do {
+                    let fetchRequest = self.houseFetchRequest
+                    fetchRequest.predicate = NSPredicate(format: "name==%@", "Stark")
+                    try person.house = self.managedContext.fetch(fetchRequest).first as? House
+                    person.house?.addToPerson(person)
+                    
+                }catch {
+                    print("There was an error saving")
+                    return
+                }
+            }
+            else {
+                do {
+                    let fetchRequest = self.houseFetchRequest
+                    fetchRequest.predicate = NSPredicate(format: "name==%@", "Unknown")
+                    try person.house = self.managedContext.fetch(fetchRequest).first as? House
+                    person.house?.addToPerson(person)
+                    
+                }catch {
+                    print("There was an error saving")
+                    return
+                }
+            }
+            
             do {
                 try self.managedContext.save()
                 
@@ -122,16 +205,21 @@ class ViewController: UIViewController{
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
- 
+        
         if segue.identifier == "toDetails"{
             let destinationVC : DetailsViewController = segue.destination as! DetailsViewController
-            destinationVC.person = selectedPerson
-            }
-            
+                destinationVC.person = selectedPerson}
+   
+
+
+        if segue.identifier == "toHouseDetails"{
+            let destinationVC : HouseDetailsViewController = segue.destination as! HouseDetailsViewController
+            destinationVC.house = selectedHouse
         }
+    }
     
-
-
+    
+    
 }
 
 extension ViewController:NSFetchedResultsControllerDelegate{
@@ -147,9 +235,14 @@ extension ViewController:NSFetchedResultsControllerDelegate{
         case .delete:
             self.tableView.deleteRows(at: [indexPath! as IndexPath], with: .fade)
         case .update:
-            guard let indexPath = indexPath,let person = controller.object(at: indexPath) as? Person,let cell = tableView.cellForRow(at: indexPath) else {return}
-            configureCell(cell: cell, person: person)
-            tableView.reloadRows(at: [indexPath], with: .fade)
+     
+            guard let indexPath = indexPath ,let cell = tableView.cellForRow(at: indexPath) else {return}
+            
+                    configureCell(cell: cell, object: controller.object(at: indexPath) as! NSManagedObject)
+            
+                tableView.reloadRows(at: [indexPath], with: .fade)
+
+       
         case .move:
             tableView.deleteRows(at: [indexPath!], with: UITableViewRowAnimation.fade)
             tableView.insertRows(at: [newIndexPath!], with: UITableViewRowAnimation.fade)
@@ -184,8 +277,9 @@ extension ViewController: UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        if let person = fetchedResultsController?.object(at: indexPath) as? Person{
-            configureCell(cell: cell, person: person)}
+        if let object = fetchedResultsController?.object(at: indexPath){
+            configureCell(cell: cell, object: object)}
+        
         return cell
         
     }
@@ -194,10 +288,16 @@ extension ViewController: UITableViewDataSource{
         return true
     }
     
-    func configureCell(cell: UITableViewCell, person: Person){
+    func configureCell(cell: UITableViewCell, object: NSManagedObject){
+        if let person = object as? Person{
         cell.textLabel?.text = person.name
+        }
+        else if let house = object as? House{
+            cell.textLabel?.text = house.name
+        }
     }
     
+
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedResultsController?.sections?.count ?? 0
@@ -223,14 +323,20 @@ extension ViewController: UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if  self.filterButton.title == "House"{
         if let person = fetchedResultsController?.object(at: indexPath) as? Person{
             selectedPerson = person
-        }
-        performSegue(withIdentifier: "toDetails", sender: self)
-        
+            performSegue(withIdentifier: "toDetails", sender: self)
+            }}
+   
+       else if self.filterButton.title == "Name"{
+    if let house = fetchedResultsController?.object(at: indexPath) as? House{
+        selectedHouse = house
+        performSegue(withIdentifier: "toHouseDetails", sender: self)
     }
-    
-    
+}
+    }
+
 }
 
 extension ViewController: UISearchResultsUpdating {

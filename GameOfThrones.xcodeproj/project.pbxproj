@@ -11,6 +11,7 @@
 		E016F27F1D9050110090CDE6 /* Person+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E016F27B1D9050110090CDE6 /* Person+CoreDataProperties.swift */; };
 		E016F2801D9050110090CDE6 /* House+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E016F27C1D9050110090CDE6 /* House+CoreDataClass.swift */; };
 		E016F2811D9050110090CDE6 /* House+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E016F27D1D9050110090CDE6 /* House+CoreDataProperties.swift */; };
+		E09DFE201D93304E00343FF2 /* HouseDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09DFE1F1D93304E00343FF2 /* HouseDetailsViewController.swift */; };
 		E0D5BE631D901A04002E78A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5BE621D901A04002E78A2 /* AppDelegate.swift */; };
 		E0D5BE651D901A04002E78A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5BE641D901A04002E78A2 /* ViewController.swift */; };
 		E0D5BE681D901A04002E78A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0D5BE661D901A04002E78A2 /* Main.storyboard */; };
@@ -44,6 +45,7 @@
 		E016F27B1D9050110090CDE6 /* Person+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Person+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E016F27C1D9050110090CDE6 /* House+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "House+CoreDataClass.swift"; sourceTree = "<group>"; };
 		E016F27D1D9050110090CDE6 /* House+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "House+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		E09DFE1F1D93304E00343FF2 /* HouseDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HouseDetailsViewController.swift; sourceTree = "<group>"; };
 		E0D5BE5F1D901A04002E78A2 /* GameOfThrones.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameOfThrones.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0D5BE621D901A04002E78A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E0D5BE641D901A04002E78A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				E0D5BE621D901A04002E78A2 /* AppDelegate.swift */,
 				E0D5BE641D901A04002E78A2 /* ViewController.swift */,
 				E0D5BE931D90DD79002E78A2 /* DetailsViewController.swift */,
+				E09DFE1F1D93304E00343FF2 /* HouseDetailsViewController.swift */,
 				E0D5BE661D901A04002E78A2 /* Main.storyboard */,
 				E0D5BE6C1D901A04002E78A2 /* Assets.xcassets */,
 				E0D5BE6E1D901A04002E78A2 /* LaunchScreen.storyboard */,
@@ -283,6 +286,7 @@
 				E016F2811D9050110090CDE6 /* House+CoreDataProperties.swift in Sources */,
 				E0D5BE941D90DD79002E78A2 /* DetailsViewController.swift in Sources */,
 				E016F27F1D9050110090CDE6 /* Person+CoreDataProperties.swift in Sources */,
+				E09DFE201D93304E00343FF2 /* HouseDetailsViewController.swift in Sources */,
 				E0D5BE651D901A04002E78A2 /* ViewController.swift in Sources */,
 				E0D5BE6B1D901A04002E78A2 /* GameOfThrones.xcdatamodeld in Sources */,
 				E0D5BE631D901A04002E78A2 /* AppDelegate.swift in Sources */,
