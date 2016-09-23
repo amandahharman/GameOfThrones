@@ -86,6 +86,7 @@ class ViewController: UIViewController{
     func initializeFetchedResultsController(request: NSFetchRequest<NSFetchRequestResult>){
         let  fetchRequest = request
         let primarySortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.predicate = nil
         fetchRequest.sortDescriptors = [primarySortDescriptor]
         
         fetchedResultsController = NSFetchedResultsController(
@@ -102,12 +103,8 @@ class ViewController: UIViewController{
         catch{
             print("Fetch failed")
         }
-        
-        
     }
   
-    
-    
     
     func filterContentForSearchText(searchText: String) {
         if searchController.isActive {
@@ -142,7 +139,6 @@ class ViewController: UIViewController{
     @IBAction func filterButtonPressed(_ sender: UIBarButtonItem) {
         if sender.title == "Name"{
             sender.title = "House"
-            
             initializeFetchedResultsController(request: peopleFetchRequest)
             tableView.reloadData()
          
@@ -150,7 +146,7 @@ class ViewController: UIViewController{
         }
         else if sender.title == "House"{
             sender.title = "Name"
-                initializeFetchedResultsController(request: houseFetchRequest)
+            initializeFetchedResultsController(request: houseFetchRequest)
             tableView.reloadData()
         }
         
@@ -167,9 +163,10 @@ class ViewController: UIViewController{
             person.name = textField?.text
             if (person.name?.contains("Stark"))!{
                 do {
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "House")
+                    let fetchRequest = self.houseFetchRequest
                     fetchRequest.predicate = NSPredicate(format: "name==%@", "Stark")
                     try person.house = self.managedContext.fetch(fetchRequest).first as? House
+                    person.house?.addToPerson(person)
                     
                 }catch {
                     print("There was an error saving")
@@ -178,9 +175,10 @@ class ViewController: UIViewController{
             }
             else {
                 do {
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "House")
+                    let fetchRequest = self.houseFetchRequest
                     fetchRequest.predicate = NSPredicate(format: "name==%@", "Unknown")
                     try person.house = self.managedContext.fetch(fetchRequest).first as? House
+                    person.house?.addToPerson(person)
                     
                 }catch {
                     print("There was an error saving")
