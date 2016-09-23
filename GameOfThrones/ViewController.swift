@@ -21,7 +21,8 @@ class ViewController: UIViewController{
     let searchController = UISearchController(searchResultsController: nil)
     var selectedPerson: Person?
     var selectedHouse: House?
-    
+            let houseFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "House")
+       let peopleFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
     @IBOutlet weak var filterButton: UIBarButtonItem!
     
     
@@ -31,13 +32,31 @@ class ViewController: UIViewController{
         tableView.register(UITableViewCell.self,
                            forCellReuseIdentifier: "Cell")
         self.view.addSubview(tableView)
-        initializeFetchedResultsController()
+        initializeFetchedResultsController(request: peopleFetchRequest)
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
         
-        
+        do{
+            if try self.managedContext.count(for: houseFetchRequest) == 0{
+                buildHouses()
+            }}
+            
+        catch {
+            print("Error")
+            return
+        }
+     
+          }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func buildHouses(){
         let starkDict: [String:String] = [
             "name": "Stark",
             "sigil": "direwolf"
@@ -47,7 +66,7 @@ class ViewController: UIViewController{
             "sigil": "unknown"
         ]
         let houses = [starkDict, unknownDict]
-  
+        
         for house in houses{
             guard let houseEntity = NSEntityDescription.insertNewObject(forEntityName: "House", into: self.managedContext) as? House else {return}
             houseEntity.name = house["name"]
@@ -61,21 +80,16 @@ class ViewController: UIViewController{
             }
             
         }
+
     }
     
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    func initializeFetchedResultsController(){
-        let peopleFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
+    func initializeFetchedResultsController(request: NSFetchRequest<NSFetchRequestResult>){
+        let  fetchRequest = request
         let primarySortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        peopleFetchRequest.sortDescriptors = [primarySortDescriptor]
+        fetchRequest.sortDescriptors = [primarySortDescriptor]
         
         fetchedResultsController = NSFetchedResultsController(
-            fetchRequest: peopleFetchRequest as! NSFetchRequest<NSManagedObject>,
+            fetchRequest: fetchRequest as! NSFetchRequest<NSManagedObject>,
             managedObjectContext: self.managedContext,
             sectionNameKeyPath: "firstLetter",
             cacheName: nil)
@@ -91,28 +105,7 @@ class ViewController: UIViewController{
         
         
     }
-    
-    func initHouseFetchedResultsController(){
-
-        let houseFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "House")
-        let primarySortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        houseFetchRequest.sortDescriptors = [primarySortDescriptor]
-        
-        fetchedResultsController = NSFetchedResultsController(
-            fetchRequest: houseFetchRequest as! NSFetchRequest<NSManagedObject>,
-            managedObjectContext: self.managedContext,
-            sectionNameKeyPath: "firstLetter",
-            cacheName: nil)
-    
-        
-        do{
-            try
-                fetchedResultsController?.performFetch()}
-            
-        catch{
-            print("Fetch failed")
-        }
-    }
+  
     
     
     
@@ -150,14 +143,14 @@ class ViewController: UIViewController{
         if sender.title == "Name"{
             sender.title = "House"
             
-            initHouseFetchedResultsController()
+            initializeFetchedResultsController(request: peopleFetchRequest)
             tableView.reloadData()
          
             
         }
         else if sender.title == "House"{
             sender.title = "Name"
-            initializeFetchedResultsController()
+                initializeFetchedResultsController(request: houseFetchRequest)
             tableView.reloadData()
         }
         

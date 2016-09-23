@@ -43,7 +43,7 @@
                                     <action selector="addButtonPressed:" destination="BYZ-38-t0r" id="azY-h2-2C6"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Name" id="e2V-rU-HDc">
+                            <barButtonItem title="House" id="e2V-rU-HDc">
                                 <connections>
                                     <action selector="filterButtonPressed:" destination="BYZ-38-t0r" id="AWV-4p-H9Y"/>
                                 </connections>
