@@ -61,10 +61,10 @@
             </objects>
             <point key="canvasLocation" x="1270" y="139"/>
         </scene>
-        <!--View Controller-->
+        <!--House Details View Controller-->
         <scene sceneID="GX9-qY-vyR">
             <objects>
-                <viewController id="4sq-Ab-Si0" sceneMemberID="viewController">
+                <viewController id="4sq-Ab-Si0" customClass="HouseDetailsViewController" customModule="GameOfThrones" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tfT-sF-mSW"/>
                         <viewControllerLayoutGuide type="bottom" id="e6I-q7-mAn"/>
@@ -72,12 +72,59 @@
                     <view key="view" contentMode="scaleToFill" id="q57-hu-9LX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.6829392997" green="0.0" blue="0.0070121920409999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="house" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iva-XO-qjk">
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sigil" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aXz-qd-iUQ">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9jF-zl-Zcr">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="IZW-Qk-vHH"/>
+                                    <constraint firstAttribute="height" constant="133" id="S8s-RD-987"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wi1-IT-7Lc">
+                                <frame key="frameInset" minX="16" minY="369" width="68" height="21"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RbD-ju-yLz">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="aXz-qd-iUQ" firstAttribute="top" secondItem="Iva-XO-qjk" secondAttribute="bottom" constant="20" id="2KI-z3-EUK"/>
+                            <constraint firstItem="RbD-ju-yLz" firstAttribute="top" secondItem="wi1-IT-7Lc" secondAttribute="bottom" constant="19" id="2ur-ka-y8a"/>
+                            <constraint firstItem="Iva-XO-qjk" firstAttribute="top" secondItem="9jF-zl-Zcr" secondAttribute="bottom" constant="23" id="BwN-v6-O6V"/>
+                            <constraint firstItem="9jF-zl-Zcr" firstAttribute="top" secondItem="tfT-sF-mSW" secondAttribute="bottom" constant="50" id="DCv-3S-Iuo"/>
+                            <constraint firstItem="Iva-XO-qjk" firstAttribute="centerX" secondItem="q57-hu-9LX" secondAttribute="centerX" id="DzZ-Kv-pxD"/>
+                            <constraint firstItem="9jF-zl-Zcr" firstAttribute="centerX" secondItem="q57-hu-9LX" secondAttribute="centerX" id="FmB-p4-Khx"/>
+                            <constraint firstItem="wi1-IT-7Lc" firstAttribute="leading" secondItem="q57-hu-9LX" secondAttribute="leadingMargin" id="RWE-OE-zoZ"/>
+                            <constraint firstItem="wi1-IT-7Lc" firstAttribute="top" secondItem="tfT-sF-mSW" secondAttribute="bottom" constant="305" id="e8t-1m-Hdr"/>
+                            <constraint firstItem="aXz-qd-iUQ" firstAttribute="centerX" secondItem="q57-hu-9LX" secondAttribute="centerX" id="l8u-LN-lbg"/>
+                            <constraint firstItem="RbD-ju-yLz" firstAttribute="leading" secondItem="q57-hu-9LX" secondAttribute="leadingMargin" constant="12" id="z2e-gf-Hyo"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="countLabel" destination="RbD-ju-yLz" id="MNB-5v-wpA"/>
+                        <outlet property="houseLabel" destination="Iva-XO-qjk" id="iwk-cf-upJ"/>
+                        <outlet property="sigilImage" destination="9jF-zl-Zcr" id="2Xg-ct-0FL"/>
+                        <outlet property="sigilLabel" destination="aXz-qd-iUQ" id="fTu-bg-d1r"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f5f-Sq-nCK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1581" y="807"/>
+            <point key="canvasLocation" x="1576.8" y="846.9265367316342"/>
         </scene>
         <!--Details View Controller-->
         <scene sceneID="CTC-W9-Ywc">
@@ -92,7 +139,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1U-07-Q46">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>

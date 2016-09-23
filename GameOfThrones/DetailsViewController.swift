@@ -20,9 +20,11 @@ class DetailsViewController: UIViewController {
     @IBOutlet weak var sigilImage: UIImageView!
 
     var person: Person!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         nameLabel.text = person.name
         if let house = person.house{
@@ -30,6 +32,7 @@ class DetailsViewController: UIViewController {
         sigilLabel.text = "Sigil: \(house.sigil!)"
         sigilImage.image = UIImage(named: "\(house.sigil!)")
         }
+ 
     }
 
     override func didReceiveMemoryWarning() {

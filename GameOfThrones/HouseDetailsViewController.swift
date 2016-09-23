@@ -10,12 +10,26 @@ import UIKit
 
 class HouseDetailsViewController: UIViewController {
 
+    @IBOutlet weak var sigilImage: UIImageView!
+    @IBOutlet weak var houseLabel: UILabel!
+    @IBOutlet weak var sigilLabel: UILabel!
+    @IBOutlet weak var countLabel: UILabel!
+    
+    
     var house: House!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        if house.name != "Unknown"{
+        houseLabel.text = "House of \(house.name!)"
+        sigilLabel.text = "Sigil: \(house.sigil!)"
+        sigilImage.image = UIImage(named: "\(house.sigil!)")
+        }
+        else{
+            houseLabel.text = "House \(house.name!)"
+            sigilLabel.isHidden = true
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -23,15 +37,5 @@ class HouseDetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

@@ -210,9 +210,10 @@ class ViewController: UIViewController{
         
         if segue.identifier == "toDetails"{
             let destinationVC : DetailsViewController = segue.destination as! DetailsViewController
-            destinationVC.person = selectedPerson
-        }
-        
+                destinationVC.person = selectedPerson}
+   
+
+
         if segue.identifier == "toHouseDetails"{
             let destinationVC : HouseDetailsViewController = segue.destination as! HouseDetailsViewController
             destinationVC.house = selectedHouse
@@ -324,18 +325,19 @@ extension ViewController: UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if  self.filterButton.title == "House"{
         if let person = fetchedResultsController?.object(at: indexPath) as? Person{
             selectedPerson = person
             performSegue(withIdentifier: "toDetails", sender: self)
-        }
+            }}
    
-        
+       else if self.filterButton.title == "Name"{
     if let house = fetchedResultsController?.object(at: indexPath) as? House{
         selectedHouse = house
-        performSegue(withIdentifier: "toDetails", sender: self)
+        performSegue(withIdentifier: "toHouseDetails", sender: self)
     }
 }
-
+    }
 
 }
 
