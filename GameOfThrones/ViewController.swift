@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import SwiftyJSON
 
 class ViewController: UIViewController{
     
@@ -47,7 +48,7 @@ class ViewController: UIViewController{
             print("Error")
             return
         }
-     
+
           }
     
     
@@ -57,29 +58,21 @@ class ViewController: UIViewController{
     }
     
     func buildHouses(){
-        let starkDict: [String:String] = [
-            "name": "Stark",
-            "sigil": "direwolf"
-        ]
-        let unknownDict: [String:String] = [
-            "name": "Unknown",
-            "sigil": "unknown"
-        ]
-        let houses = [starkDict, unknownDict]
-        
-        for house in houses{
-            guard let houseEntity = NSEntityDescription.insertNewObject(forEntityName: "House", into: self.managedContext) as? House else {return}
-            houseEntity.name = house["name"]
-            houseEntity.sigil = house["sigil"]
-            do {
-                try self.managedContext.save()
+        let asset = NSDataAsset(name: "houses", bundle: Bundle.main)
+        let json = JSON(data: asset!.data)
+            for item in json["houses"].arrayValue {
+                guard let houseEntity = NSEntityDescription.insertNewObject(forEntityName: "House", into:  self.managedContext) as? House else {return}
+                    houseEntity.name = item["name"].stringValue
+                    houseEntity.sigil = item["sigil"].stringValue
+                    do {
+                        try self.managedContext.save()
                 
-            }catch {
-                print("There was an error saving")
-                return
+                        }catch {
+                        print("There was an error saving")
+                        return
+                    }
+
             }
-            
-        }
 
     }
     

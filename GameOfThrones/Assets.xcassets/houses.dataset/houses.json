@@ -1,0 +1,36 @@
+{
+	"houses": [
+		{
+			"name": "Stark",
+			"sigil": "direwolf"
+		},
+		{
+			"name": "Baratheon",
+			"sigil": "stag"
+		},
+		{
+			"name": "Lannister",
+			"sigil": "lion"
+		},
+		{
+			"name": "Targaryen",
+			"sigil": "dragon"
+		},
+		{
+			"name": "Greyjoy",
+			"sigil": "kraken"
+		},
+		{
+			"name": "Arryn",
+			"sigil": "falcon"
+		},
+		{
+			"name": "Tully",
+			"sigil": "trout"
+		},
+		{
+			"name": "Unknown", 
+			"sigil": "Unknown"		}
+
+	]
+}
