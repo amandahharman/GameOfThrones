@@ -42,12 +42,14 @@ class ViewController: UIViewController{
         do{
             if try self.managedContext.count(for: houseFetchRequest) == 0{
                 buildHouses()
+                initializeCharacters()
             }}
             
         catch {
             print("Error")
             return
         }
+
 
           }
     
@@ -73,6 +75,38 @@ class ViewController: UIViewController{
                     }
 
             }
+
+    }
+    
+    func initializeCharacters(){
+
+        let asset = NSDataAsset(name: "characters", bundle: Bundle.main)
+        let json = JSON(data: asset!.data)
+        for item in json["characters"].arrayValue {
+            guard let person = NSEntityDescription.insertNewObject(forEntityName: "Person", into:  self.managedContext) as? Person else {return}
+            person.name = item["name"].stringValue
+            do {
+                let houseName = item["house"].stringValue
+                let fetchRequest = self.houseFetchRequest
+                fetchRequest.predicate = NSPredicate(format: "name==%@", houseName)
+                try person.house = self.managedContext.fetch(fetchRequest).first as? House
+                person.house?.addToPerson(person)
+            
+        }catch {
+            print("Could not retrieve house.")
+            return
+        }
+
+            do {
+                try self.managedContext.save()
+                
+            }catch {
+                print("There was an error saving person")
+                return
+            }
+        
+        }
+        
 
     }
     
