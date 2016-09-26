@@ -1,0 +1,37 @@
+{
+	"characters": [
+		{
+			"name": "Ned Stark",
+			"house": "Stark"
+		},
+		{
+			"name": "Arya Stark",
+			"house": "Stark"
+		},
+		{
+			"name": "Nan",
+			"house": "Stark"
+		},
+		{
+			"name": "Hordor",
+			"house": "Stark"
+		},
+		{
+			"name": "Robert Baratheon", 
+			"house": "Baratheon"
+		},
+		{
+			"name": "Tyrion Lannister",
+			"house": "Lannister"
+		},
+		{
+			"name": "Theon Greyjoy", 
+			"house": "Greyjoy"
+		},
+		{
+			"name": "Quorin Halfhand", 
+			"house": "Unknown"
+		}
+
+	]
+}
